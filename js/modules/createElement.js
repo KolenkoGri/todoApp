@@ -2,12 +2,21 @@ const container = document.querySelector('.app-container');
 container.classList.add('vh-100', 'w-100', 'd-flex', 'align-items-center',
     'justify-content-center', 'flex-column');
 
+const overlayModal = document.querySelector('.modal__overlay');
+const modal = document.querySelector('.modal');
+
 container.insertAdjacentHTML('beforeend', `
 <h3>Todo App</h3>
     <form class="d-flex align-items-center mb-3">
       <label class="form-group me-3 mb-0">
         <input type="text" class="form-control" placeholder="ввести задачу">
       </label>
+
+      <select class="btn me-3 btn-dark" name="important" id="important-select">
+        <option value="table-light">Обычная</option>
+        <option value="table-warning">Важная</option>
+        <option value="table-danger">Срочная</option>
+      </select>
 
       <button type="submit" class="btn btn-primary me-3">
         Сохранить
@@ -61,4 +70,6 @@ const createTask = (id, value) => {
 export {
   tbody,
   createTask,
+  overlayModal,
+  modal,
 };

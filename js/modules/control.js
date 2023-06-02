@@ -3,19 +3,22 @@ import {userName,
   setStorage,
   dataStorage,
   stor,
-  removeStorage} from './storage.js';
+  removeStorage,
+  changeStorage} from './storage.js';
 
 const addBtn = document.querySelector('.btn-primary');
 const form = document.querySelector('.form-control');
 addBtn.setAttribute('disabled', 'disabled');
 
-form.addEventListener('input', () => {
-  if (form.value.trim() !== '') {
-    addBtn.removeAttribute('disabled');
-  } else {
-    addBtn.setAttribute('disabled', 'disabled');
-  }
-});
+const formBlock = () => {
+  form.addEventListener('input', () => {
+    if (form.value.trim()) {
+      addBtn.removeAttribute('disabled');
+    } else {
+      addBtn.setAttribute('disabled', 'disabled');
+    }
+  });
+};
 let id = 1;
 
 const allDelBtns = () => {
@@ -52,6 +55,20 @@ const allSuccessBtn = () => {
   });
 };
 
+const allValueTd = () => {
+  const allValueTd = document.querySelectorAll('.task');
+  allValueTd.forEach((el) => {
+    el.addEventListener('blur', () => {
+      console.log(el.textContent);
+      const newObj = {
+        id: el.previousElementSibling.textContent,
+        value: el.textContent,
+      };
+      changeStorage(userName, newObj);
+    });
+  });
+};
+
 addBtn.addEventListener('click', (e) => {
   e.preventDefault();
   id = stor !== [] ? dataStorage(userName) + 1 : 1;
@@ -65,6 +82,8 @@ addBtn.addEventListener('click', (e) => {
   id += 1;
   allDelBtns();
   allSuccessBtn();
+  allValueTd();
+  addBtn.setAttribute('disabled', 'disabled');
 });
 
 const resetBtn = document.querySelector('.btn.btn-warning');
@@ -72,25 +91,10 @@ resetBtn.addEventListener('click', (e) => {
   e.preventDefault();
   tbody.replaceChildren();
   id = 1;
+  form.value = '';
+  addBtn.setAttribute('disabled', 'disabled');
   localStorage.removeItem(userName);
 });
-
-// const allValueTd = () => {
-//     // const AllTr = document.querySelectorAll('tr');
-//     const allValueTd = document.querySelectorAll('.task');
-//     allValueTd.forEach((el) => {
-//         el.addEventListener('change', () => {
-//             console.log('click');
-//             setStorage(userName, el);
-//         })
-//     })
-//     const newObj = {
-
-//     }
-//     setStorage(userName, valueTd);
-//     console.log(valueTd);
-
-// }
 
 export {
   addBtn,
@@ -98,5 +102,6 @@ export {
   allDelBtns,
   resetBtn,
   allSuccessBtn,
-  // allValueTd
+  allValueTd,
+  formBlock,
 };
